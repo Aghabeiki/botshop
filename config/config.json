@@ -1,0 +1,21 @@
+{
+    "development": {
+        "db": {
+            "dialect": "mysql",
+            "connection": {
+                "username": "root",
+                "password": null,
+                "database": "database_development",
+                "host": "127.0.0.1"
+            }
+        },
+        "bot": {
+            "token": "437765683:AAEtLd_S9mzaEuWItPX4p0uR6Hl4p8Nd6rc",
+            "options": {
+                "polling": true
+            }
+        }
+    },
+    "test": {},
+    "production": {}
+}
