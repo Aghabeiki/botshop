@@ -6,7 +6,7 @@
 let Command = require('../libs/commands/Command');
 const {Extra, memorySession} = require('telegraf');
 module.exports = new Command('hears', 'Shop', (ctx) => {
-    ctx.session.state = 'shop'
+    ctx.session.lastState = 'shop'
     Categories
         .findAll()
         .then(categories => {
