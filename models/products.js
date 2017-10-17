@@ -11,6 +11,12 @@ module.exports = function (sequelize, DataTypes) {
         price: {
             type: DataTypes.STRING
         },
+        promoPrice: {
+            type: DataTypes.STRING
+        },
+        promoLimit:{
+            type: DataTypes.INTEGER
+        },
         image: {
             type: DataTypes.TEXT
         },

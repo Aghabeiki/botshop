@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.5.0",
     "base64-img": "^1.0.3",
     "mysql": "^2.14.1",
     "mysql2": "^1.4.2",

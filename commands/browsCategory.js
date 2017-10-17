@@ -77,4 +77,13 @@ module.exports = new Command('middleware', 'browsCategory', (ctx) => {
                 .catch(console.trace);
         }
     }
+    else if (ctx.session.lastState == 'orderProduct') {
+
+        ctx.deleteMessage()
+            .then(() => {
+                "use strict";
+                showCate(ctx);
+            })
+            .catch(console.trace);
+    }
 })

@@ -18,7 +18,7 @@ module.exports = new Command('middleware', 'selectProduct', (ctx) => {
                     , {columns: 2}));
             let messageBody = (`${product.title}\n\r` ) +
             `Price: ${product.price}\n\r` +
-            product.count == 0 ? `out of stock\n\r` : `in stock : ${product.count} left\n\r`;
+            product.count == 0 ? `out of stock\n\r` : `in stock\n\r`;
             if (product.image == undefined || product.image == null) {
                 // send res by text only
                 ctx.editMessageText(messageBody, markup)
