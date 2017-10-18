@@ -10,6 +10,7 @@ const {Router, memorySession} = require('telegraf');
 
 global.bot = new Telegraf(config.bot.token)
 global.bot.use(memorySession({ttl: 1024}))
+global['_']=require('lodash');
 
 global.bot.telegram.getMe().then((botInfo) => {
     global.bot.options.username = botInfo.username

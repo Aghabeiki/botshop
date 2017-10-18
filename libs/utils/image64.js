@@ -23,6 +23,10 @@ let image64 = {
             buffer: Buffer.from(match[2], 'base64')
         };
     },
+    encodeImage:function(data){
+        const imageType = require('image-type');
+        return "data:" + imageType(data).mime + ";base64,"+data.toString('base64')
+    },
     bufferToStream: function (buffer) {
         let Duplex = require('stream').Duplex;
         let stream = new Duplex();

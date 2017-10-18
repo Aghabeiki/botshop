@@ -4,7 +4,7 @@
             "dialect": "mysql",
             "connection": {
                 "username": "root",
-                "password": null,
+                "password": "enigma4a",
                 "database": "database_development",
                 "host": "127.0.0.1"
             }

@@ -5,20 +5,40 @@
 let Command = require('../libs/commands/Command');
 let image64 = require('../libs/utils/image64');
 const totalProductsInBrowsingPage = 12;
-const {Extra, memorySession} = require('telegraf');
+const { Extra, memorySession } = require('telegraf');
 module.exports = new Command('middleware', 'selectProduct', (ctx) => {
     "use strict";
-    ctx.session.lastState = 'selectProduct';
-    Products.findById(ctx.state.data)
+    let productID = -1;
+    if (ctx.session.lastState !== 'selectProduct') {
+        ctx.session.lastState = 'selectProduct';
+        ctx.session.selectedProduct = {
+            id: ctx.state.data,
+            count: 1
+        }
+        productID = ctx.state.data;
+    }
+    else {
+        // inc and dec the count 
+        if (ctx.state.data == 'mine')
+            ctx.session.selectedProduct.count--;
+        else
+            ctx.session.selectedProduct.count++;
+
+        productID = ctx.session.selectedProduct.id;
+    }
+
+    Products.findById(productID)
         .then(product => {
             const markup = Extra
                 .HTML()
-                .markup((m) => m.inlineKeyboard([
-                        m.callbackButton("Order", `orderProduct#:#${ctx.state.data}`), m.callbackButton("Back", 'browsCategory#:#return')]
-                    , {columns: 2}));
-            let messageBody = (`${product.title}\n\r` ) +
-            `Price: ${product.price}\n\r` +
-            product.count == 0 ? `out of stock\n\r` : `in stock\n\r`;
+                .markup((m) => m.inlineKeyboard(
+                    [
+                        [m.callbackButton("-1", `selectProduct#:#mine`), m.callbackButton("+1", `selectProduct#:#plus`)],
+                        [m.callbackButton(`Order ${ctx.session.selectedProduct.count} pc(s)`, `orderProduct#:#order`), m.callbackButton("Back", 'browsCategory#:#return')]
+                    ], { columns: 2 }));
+            let messageBody = (`${product.title}\n\r`) +
+                `Price: ${product.price}\n\r` +
+                product.count == 0 ? `out of stock\n\r` : `in stock\n\r`;
             if (product.image == undefined || product.image == null) {
                 // send res by text only
                 ctx.editMessageText(messageBody, markup)
@@ -33,7 +53,7 @@ module.exports = new Command('middleware', 'selectProduct', (ctx) => {
                 markup.caption = messageBody;
                 ctx.deleteMessage().then(() => {
                     ctx
-                        .replyWithPhoto({source: require('../libs/utils/image64').decodeImage(product.image).buffer}, markup)
+                        .replyWithPhoto({ source: require('../libs/utils/image64').decodeImage(product.image).buffer }, markup)
                         .then(() => undefined)
                         .catch(console.trace);
                 }).catch((err) => {
